@@ -1,0 +1,39 @@
+#userForm {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+#messageForm {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+/*form input {
+  width: 90%;
+  padding: 15px;
+}
+form button {
+  padding: 15px;
+  width: 10%;
+}*/
+
+#messages li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#messages li:nth-child(odd) {
+  background: #eee;
+}
+
+#userPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  /*padding: 25px;*/
+  margin: 15px;
+  font-size: 1.5em;
+  list-style-type: none;
+}
