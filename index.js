@@ -32,8 +32,9 @@ var counter = 0;
 io.on('connection', function(socket) {
   //On new connection send 'game' event with obstacles and other players
   //Add new player to the existing game
-  // socket.name = counter;
+  socket.name = counter;
   socket.emit('game', getGameState());
+  counter++;
   socket.on('update', function(playerState) {
 
     // console.log(playerState);
@@ -42,13 +43,13 @@ io.on('connection', function(socket) {
     //also send all his information out to the other players
     socket.broadcast.emit('player', playerState)
   });
-  // socket.on('disconnect', function() {
-  //   //Remove the player from the game
-  //   //Update all other players
-  //   socket.broadcast.emit('playerLeft', socket.name)
-  //
-  //
-  // });
+  socket.on('disconnect', function() {
+    //Remove the player from the game
+    //Update all other players
+    socket.broadcast.emit('playerLeft', socket.name)
+
+
+  });
 });
 
 function getGameState() {
@@ -56,7 +57,7 @@ function getGameState() {
     players: game.players,
     ents: game.ents,
     bullets: game.bullets,
-    id: counter++
+    id: counter
   }
 }
 

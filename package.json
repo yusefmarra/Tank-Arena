@@ -1,7 +1,7 @@
 {
-  "name": "y-chat",
+  "name": "Tank Arena",
   "version": "0.0.1",
-  "description": "socket.io experiment",
+  "description": "Tank Game Multiplayer",
   "dependencies": {
     "body-parser": "^1.13.3",
     "express": "^4.10.2",
@@ -14,5 +14,5 @@
   "author": "Yusef Marra",
   "main": "index.js",
   "license": "MIT",
-  "repository": "git@github.com:yusefmarra/sockets-chat.git"
+  "repository": "git@github.com:yusefmarra/Tank-Arena.git"
 }
