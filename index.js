@@ -43,6 +43,11 @@ io.on('connection', function(socket) {
     //also send all his information out to the other players
     socket.broadcast.emit('player', playerState)
   });
+
+  socket.on('newBullet', function(bullet) {
+    socket.broadcast.emit('newBullet', bullet);
+  })
+
   socket.on('disconnect', function() {
     //Remove the player from the game
     //Update all other players

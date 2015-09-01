@@ -11,7 +11,7 @@ socket.on('game', function(gameState) {
   }
 
   socket.on('playerLeft', function(id) {
-    console.log(id + " what the fuck")
+    // console.log(id + " what the fuck")
     game.enemies.splice(game.enemies.indexOf(id),1);
     game.removeEnt(id);
   });
@@ -21,15 +21,16 @@ socket.on('game', function(gameState) {
 socket.on('player', function(playerState) {
   // console.log(playerState);
   if (game.enemies.indexOf(playerState.id) === -1){
-    // console.log('making new enemy');
     game.addEnt(new Enemy(playerState.center, playerState.rotation, playerState.turretRotation, playerState.id, playerState.health));
     game.enemies.push(playerState.id);
   } else {
-    // console.log('updating enemy');
     game.updateEnemy(playerState);
   }
 });
 
+socket.on('newBullet', function(bullet) {
+  game.addBullet(new Bullet(bullet.vector, bullet.center));
+});
 
 // ;(function (){
   //Grab the canvas element from the DOM and get a 'context object'
@@ -117,6 +118,14 @@ socket.on('player', function(playerState) {
         health: this.player.health,
       }
     },
+    getBullets: function() {
+      var bullets = [];
+      for (var i = 0; i < this.bullets.length; i++) {
+        bullets.push({vector:this.bullets[i].vector,
+                      center: this.bullets[i].center})
+      }
+      return bullets;
+    },
     //Add an entity to the entity array
     addEnt: function(ent){
       this.ents.push(ent);
@@ -127,13 +136,12 @@ socket.on('player', function(playerState) {
     updateEnemy: function(playerState) {
       for (var i = 0; i < this.ents.length; i++) {
         if (this.ents[i].id) {
-          console.log(playerState.id);
-          console.log(this.ents[i].id);
+          // console.log(playerState.id);
+          // console.log(this.ents[i].id);
           if (this.ents[i].id == playerState.id) {
             this.ents[i].center = playerState.center;
             this.ents[i].rotation = playerState.rotation;
             this.ents[i].radians = playerState.turretRotation;
-            console.log(this.ents[i]);
           }
         }
       }
@@ -195,6 +203,7 @@ socket.on('player', function(playerState) {
           vector.y = (this.input.getPos()[1]-this.center.y);
           var center = { x: this.center.x, y: this.center.y};
           var bullet = new Bullet(vector, center);
+          socket.emit('newBullet', {vector: vector, center:center})
           this.game.addBullet(bullet);
           this.lastFired = newTime;
         }
@@ -370,7 +379,7 @@ socket.on('player', function(playerState) {
   }
 
   function Bullet(vector, center) {
-    // var vector = vector;
+    this.vector = vector;
     this.speed = 20;
     this.center = center;
     this.size = {x:4,y:4};
